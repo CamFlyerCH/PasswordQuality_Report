@@ -1,7 +1,7 @@
 ﻿# 04.12.2023 - Prepare_PasswordQuality_Report.ps1 by https://github.com/CamFlyerCH
 
 # Set path to sorted password hash file from haveibeenpwnd
-$SortedHashFile = "D:\pwnedpasswords_ntlm.txt"
+$SortedHashFile = "D:\PW-Audit\pwnedpasswords_ntlm.txt"
 
 # Init
 Import-Module DSInternals
