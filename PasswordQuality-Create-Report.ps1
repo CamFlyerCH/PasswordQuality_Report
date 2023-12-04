@@ -6,20 +6,21 @@ $ScriptPath = $MyInvocation.MyCommand.Path
 $ScriptDir = Split-Path -Parent $ScriptPath
 $DaysOld = 365
 
-$DataFiles = Get-ChildItem -Path $ScriptDir -Filter "PWTEST-Result_*.xml"
+$DataFiles = Get-ChildItem -Path $ScriptDir -Filter "PasswordQuality_*_PWQ-Data.xml"
+
 
 ForEach($DataFile in $DataFiles){
-    $Domain = $DataFile.BaseName.Replace("PWTEST-Result_","")
+    $Domain = ($DataFile.BaseName.Replace("PasswordQuality_","")).Replace("_PWQ-Data","")
 
     Write-Host ("Start working on domain $Domain")
 
     $QualityData = Import-Clixml -LiteralPath $DataFile.FullName
-    $AccountData = Import-Clixml -Path ($ScriptDir + "\PWTEST-Accounts_" + $Domain + ".xml")
+    $AccountData = Import-Clixml -Path ($ScriptDir + "\PasswordQuality_" + $Domain + "_Accounts.xml")
 
     Write-Host ("Imported quality data and " + $AccountData.Count + " accounts")
 
     # Create Excel
-    $ExcelFilePath = $ScriptDir + "\PWTEST-Report  " + $Domain + "  " + $(Get-Date $DataFile.LastWriteTime -Format "yyyy.MM.dd HH.mm") + "_.xlsx"
+    $ExcelFilePath = $ScriptDir + "\PasswordQuality_" + $Domain + "_Report_" + $(Get-Date $DataFile.LastWriteTime -Format "yyyy.MM.dd_HH.mm") + ".xlsx"
     If($ExcelFilePath){
         If (Test-Path $ExcelFilePath) { Remove-Item $ExcelFilePath -Force }
         $ExcelPack = Open-ExcelPackage -Path $ExcelFilePath -Create
