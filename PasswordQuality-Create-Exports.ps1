@@ -1,4 +1,4 @@
-﻿# 04.12.2023 - Prepare_PasswordQuality_Report.ps1 by https://github.com/CamFlyerCH
+# 04.12.2023 - Prepare_PasswordQuality_Report.ps1 by https://github.com/CamFlyerCH
 
 # Set path to sorted password hash file from haveibeenpwnd
 $SortedHashFile = "S:\AD-Audit\pwnedpasswords_ntlm.txt"
@@ -13,8 +13,8 @@ $ADDomain = Get-ADDomain
 
 # Run PassowrdQualityCheck
 $PWQualityData = Get-ADReplAccount -All -Server $ADDomain.PDCEmulator -NamingContext $ADDomain.DistinguishedName | Test-PasswordQuality -WeakPasswordHashesFile $SortedHashFile
-$PWQualityData > ($ScriptDir + "\PWTEST-Result_" + $ADDomain.DNSRoot + ".txt")
-$PWQualityData | Export-Clixml -Path ($ScriptDir + "\PWTEST-Result_" + $ADDomain.DNSRoot + ".xml")
+$PWQualityData > ($ScriptDir + "\PasswordQuality_" + $ADDomain.DNSRoot + "_PWQ-Data.txt")
+$PWQualityData | Export-Clixml -Path ($ScriptDir + "\PasswordQuality_" + $ADDomain.DNSRoot + "_PWQ-Data.xml")
 
 # Get accounts
 $ADUsers = Get-ADUser -Filter {Enabled -eq $True} -SearchScope Subtree -Properties CanonicalName,Created,Modified,Manager,Description,DisplayName,LastLogonDate,PasswordLastSet,PasswordNeverExpires,Enabled,Mail,userPrincipalName | Sort-Object CanonicalName
@@ -40,5 +40,4 @@ ForEach ($ADComputer in $ADComputers){
 }
 
 # Export accounts
-$AccountList | Export-Clixml -Path ($ScriptDir + "\PWTEST-Accounts_" + $ADDomain.DNSRoot + ".xml")
-
+$AccountList | Export-Clixml -Path ($ScriptDir + "\PasswordQuality_" + $ADDomain.DNSRoot + "_Accounts.xml")
