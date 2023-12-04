@@ -41,9 +41,9 @@ Download the second script [PasswordQuality-Create-Report.ps1](https://github.co
 
 The export script run in point 4 should create three files:
 
-1.  `PasswordQuality_<DomainName>_Accounts.xml`
-2.  `PasswordQuality_<DomainName>_PWQ-Data.txt`
-3.  `PasswordQuality_<DomainName>_PWQ-Data.xml`
+1.  PasswordQuality_<DomainName>_Accounts.xml
+2.  PasswordQuality_<DomainName>_PWQ-Data.txt
+3.  PasswordQuality_<DomainName>_PWQ-Data.xml
 
 Copy at least the two .xml files to the same folder as the PasswordQuality-Create-Report.ps1 script.
 
