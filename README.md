@@ -5,7 +5,7 @@ These two scripts help to create a nice report from the output of [DSInternals](
 There are 2 scripts, because I think the procedure should be done in 2 steps:
 
 1.  Data-Collection on the Domain Controller with the installed DSInternals PowerShell Module
-2.  Creation of the Excel report from the collected data with the help of the excelent [ImportExcel](https://github.com/dfinke/ImportExcel) PowerShell module to import/export Excel spreadsheets, without the need of Excel itself. 
+2.  Creation of the Excel report from the collected data with the help of the excelent [ImportExcel](https://github.com/dfinke/ImportExcel) PowerShell module to import/export Excel spreadsheets, without the need of Excel itself.
 
 Check the Demo folder for a sample of the created files.
 
@@ -17,7 +17,7 @@ To get this list (about a 30 GByte text file) from [have i been pwned](https://h
 
 #### 2 - Install the DSInternals PowerShell module on one Domain Controller
 
-Install the module [DSInternals](https://github.com/MichaelGrafnetter/DSInternals/blob/master/Documentation/PowerShell/Readme.md) directly with `**Install-Module DSInternals -Force**`  or by saving it on a workstation first with for example `**Save-Module DSInternals -Path C:\Data\PSModules**` and then copy it to the domain controller to the path `**C:\Windows\System32\WindowsPowerShell\v1.0\Modules.**`
+Install the module [DSInternals](https://github.com/MichaelGrafnetter/DSInternals/blob/master/Documentation/PowerShell/Readme.md) directly with `Install-Module DSInternals -Force`  or by saving it on a workstation first with for example `Save-Module DSInternals -Path C:\Data\PSModules` and then copy it to the domain controller to the path `C:\Windows\System32\WindowsPowerShell\v1.0\Modules` .
 
 **3 - Put the script and the hash file on the domain controller**
 
@@ -31,10 +31,25 @@ Open the Script PasswordQuality-Create-Exports.ps1 in an editor an change line 4
 
 #### 5 - Install the ImportExcel Module on your computer of choice
 
-To create the Excel sheet, you need to have the PowerShell Module [ImportExcel](https://github.com/dfinke/ImportExcel) installed on the workstation where you also what to view the report later. The module is also available from the [Powershell Gallery](https://www.powershellgallery.com/packages/ImportExcel). The simplest way to install the module will be to execute `**Install-Module -Name ImportExcel -Force**` in an (elevated) PowerShell window.
+To create the Excel sheet, you need to have the PowerShell Module [ImportExcel](https://github.com/dfinke/ImportExcel) installed on the workstation where you also what to view the report later. The module is also available from the [Powershell Gallery](https://www.powershellgallery.com/packages/ImportExcel). The simplest way to install the module will be to execute `Install-Module -Name ImportExcel -Force` in an (elevated) PowerShell window.
 
-#### 6 - Download the 2. script to a folder
+#### 6 - Download the Create-Report script to a folder
 
-Doanload the second script [PasswordQuality-Create-Report.ps1](https://github.com/CamFlyerCH/PasswordQuality_Report/raw/main/PasswordQuality-Create-Report.ps1) from this repository to a folder where you plan to have the report. Depending on you PowerShell configuration, this folder should be localy. Also don't forget to unblock it after downloading it from the internet.
+Download the second script [PasswordQuality-Create-Report.ps1](https://github.com/CamFlyerCH/PasswordQuality_Report/raw/main/PasswordQuality-Create-Report.ps1) from this repository to a folder where you plan to have the report. Depending on you PowerShell configuration, this folder should be localy. Also don't forget to unblock it after downloading it from the internet.
 
-Transfer the exports to the folder on the workstation
+#### 7 - Transfer the exports to the folder on the workstation
+
+The export script run in point 4 should create three files:
+
+1.  `PasswordQuality_<DomainName>_Accounts.xml`
+2.  `PasswordQuality_<DomainName>_PWQ-Data.txt`
+3.  `PasswordQuality_<DomainName>_PWQ-Data.xml`
+
+Copy at least the two .xml files to the same folder as the PasswordQuality-Create-Report.ps1 script.
+
+#### 8 - Execute the Create-Report script
+
+The script will first look for all PWQ-Data.xml files and then work on these files for every domain name found.  
+It will create and open an Excel file named `PasswordQuality_<DomainName>_Report_<ExportModifyDate>.xlsx` 
+
+If Excel is not installed on the machine, an requester will pop up, but the file is created anyways.
